@@ -46,4 +46,10 @@ Caso seja necessário debugar a API, execute o somente o banco de dados via dock
 
 ## Consumindo a API
 
+### Postman
+
 Para fins de teste, foi disponibilizado na raiz do projeto uma Postman collection chamada `ProjetoFinal.postman_collection.json` para que seja possível realizar testes facilmente.
+
+### Insomnia
+
+Para fins de teste, coloca os endpoins utilizados neste projeto em um [repo](https://github.com/DaniloP85/projeto-final-collection).

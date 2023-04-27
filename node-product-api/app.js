@@ -13,6 +13,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser()); 
 
+const { auth } = require('express-oauth2-jwt-bearer');
+
+const checkJwt = auth({
+    audience: 'projeto-final',
+    issuerBaseURL: 'https://dev-2zdtulpnb8jm1j8a.us.auth0.com/',
+    tokenSigningAlg: 'RS256'
+});
+
+
+app.use(checkJwt);
+
+app.use(function(req, res, next) {
+   res.setHeader('Access-Control-Allow-Origin', '*');
+   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, authorization');
+   res.setHeader('Access-Control-Allow-Credentials', true);
+   next();
+});
+
 app.get('/products', async (req, res, next) => { 
     var resp = await db.getAllProducts();
     res.status(200).json(resp);
