@@ -1,19 +1,15 @@
-var http = require('http'); 
-
 const express = require('express') 
-const app = express()
-const port = 3001
-
+const { auth } = require('express-oauth2-jwt-bearer');
 const db = require("./db");
-
-var cookieParser = require('cookie-parser'); 
+let cookieParser = require('cookie-parser'); 
 const bodyParser = require('body-parser');
 
+const port = 3001
+const app = express()
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cookieParser()); 
 
-const { auth } = require('express-oauth2-jwt-bearer');
 
 const checkJwt = auth({
     audience: 'projeto-final',
