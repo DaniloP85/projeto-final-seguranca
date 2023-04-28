@@ -1,5 +1,15 @@
 const { randomUUID } = require('crypto');
 
+const exceuteDB = async (query, field) => {
+    console.log(`Executando query: ${query}`);
+    const [rows, fields] = await connection.execute(query, field, (err, rows) => {
+        console.log("Retorno SQL: " + JSON.stringify(rows));
+        return rows;
+      });
+
+      return rows;
+}
+
 async function connect(){
     if(global.connection && global.connection.state !== 'disconnected')
         return global.connection;
@@ -22,58 +32,36 @@ async function getAllProducts(){
     const conn = await connect();
     
     const query = `SELECT * FROM products LIMIT 1000;`;
-    console.log(`Executando query: ${query}`);
-
-    const [rows, fields] = await connection.execute(query);
-    console.log(`Rows: ${JSON.stringify(rows)}`);
-    return rows;
+    return exceuteDB(query, []);;
 }
 
-async function getProductById(id){
-    const conn = await connect();
-    
-    const query = `SELECT * FROM products WHERE id = "${id}";`;
-    console.log(`Executando query: ${query}`);
-    
-    const [rows, fields] = await connection.execute(query);
-
-    return rows;
+async function getProductById(id){    
+    const query = `SELECT * FROM products WHERE id = ?;`;    
+    return exceuteDB(query, [id]);
 }
 
 
 async function updateProductById(id, name, description, value){
-    try{
-        const conn = await connect();
-    
-        const query = `UPDATE products SET name = "${name}", description = "${description}", value = ${value} WHERE id = "${id}";`;
-        console.log(`Executando query: ${query}`);
+    try{    
+        const query = `UPDATE products SET name = ?, description = ?, value = ? WHERE id = ?;`;
+        return exceuteDB(query, [name, description, value, id]);
         
-        const [rows] = await conn.execute(query);
-        return rows;
     }catch(err){
         throw {code: 500, message: 'Erro inesperado ao tentar cadastrar usuário'};
     }
 }
 
-
-
-async function deleteProductById(id){
-    const conn = await connect();
-    
-    const query = `DELETE FROM products WHERE id = "${id}";`;
-    console.log(`Executando query: ${query}`);
-
-    await connection.execute(query);
+async function deleteProductById(id){    
+    const query = `DELETE FROM products WHERE id = ?;`;
+    exceuteDB(query, [id]);
 }
 
 async function insertProduct(name, description, value){
     const conn = await connect();
-
-    const query = `INSERT INTO products(id, name, description, value) VALUES ("${randomUUID()}", "${name}", "${description}", ${value});`;
-    console.log(`Executando query: ${query}`);
+    const query = `INSERT INTO products(id, name, description, value) VALUES (?, ?, ?, ?);`;
 
     try{
-        await connection.execute(query);
+        exceuteDB(query, [randomUUID(), name, description, value])
     }catch(err){
         if(err.errno === 1062){
             throw {code: 400, message: 'Já existe um producte cadastrado com este usuário!'};
