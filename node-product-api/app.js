@@ -21,6 +21,17 @@ const ReDoS = (text) =>{
     return text.replace(/[^a-zA-Z0-9 ]/g, '');
 }
 
+var RateLimit = require('express-rate-limit');
+
+var limiter = new RateLimit({
+    windowMs: 15*60*1000,
+    max: 2,
+    delayMs: 0,
+    message: "Too many accounts created from this IP, please try again after an hour"
+});
+
+app.use(limiter);
+
 app.use(checkJwt);
 
 app.use(function(req, res, next) {
