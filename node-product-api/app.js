@@ -1,27 +1,32 @@
-var http = require('http'); 
-
 const express = require('express') 
-const app = express()
-const port = 3001
-
-const db = require("./db");
-
-var cookieParser = require('cookie-parser'); 
-const bodyParser = require('body-parser');
-
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(bodyParser.json());
-app.use(cookieParser()); 
-
 const { auth } = require('express-oauth2-jwt-bearer');
-
+const db = require("./db");
+const bodyParser = require('body-parser');
+let cookieParser = require('cookie-parser'); 
+let RateLimit = require('express-rate-limit');
+const port = 3001
+const app = express()
 const checkJwt = auth({
     audience: 'projeto-final',
     issuerBaseURL: 'https://dev-2zdtulpnb8jm1j8a.us.auth0.com/',
     tokenSigningAlg: 'RS256'
 });
 
+const ReDoS = (text) =>{
+    return text.replace(/[^a-zA-Z0-9 ]/g, '');
+}
 
+let limiter = new RateLimit({
+    windowMs: 15*60*1000,
+    max: 10,
+    delayMs: 0,
+    message: "Too many accounts created from this IP, please try again after an hour"
+});
+
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
+app.use(cookieParser()); 
+app.use(limiter);
 app.use(checkJwt);
 
 app.use(function(req, res, next) {
@@ -40,9 +45,9 @@ app.get('/products', async (req, res, next) => {
 app.post('/products', async (req, res, next) => { 
 
     try{
-        var name = req.body.name;
-        var description = req.body.description
-        var value = req.body.value
+        var name = ReDoS(req.body.name);
+        var description = ReDoS(req.body.description);
+        var value = ReDoS(req.body.value);
         
         await db.insertProduct(name, description, value);
         return res.status(200).json({message: 'Produto cadastrado com sucesso!'});
@@ -51,7 +56,6 @@ app.post('/products', async (req, res, next) => {
         return res.status(err.code).json(err);
     }
 });
-
 
 app.get('/products/:id', async (req, res, next) => { 
 
@@ -71,10 +75,9 @@ app.put('/products/:id', async (req, res, next) => {
 
     try{
         var id = req.params.id;
-
-        var name = req.body.name;
-        var description = req.body.description
-        var value = req.body.value
+        var name = ReDoS(req.body.name);
+        var description = ReDoS(req.body.description)
+        var value = ReDoS(req.body.value);
         
         const rows = await db.updateProductById(id, name, description, value);
         if(rows){
@@ -97,7 +100,6 @@ app.delete('/products/:id', async (req, res, next) => {
         return res.status(err.code).json(err);
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`)
