@@ -2,7 +2,7 @@ var http = require('http');
 
 const express = require('express') 
 const app = express()
-const port = 3001
+const port = 3000
 
 const db = require("./db");
 
@@ -31,6 +31,27 @@ app.use(function(req, res, next) {
    res.setHeader('Access-Control-Allow-Credentials', true);
    next();
 });
+
+const fs = require('fs');
+
+var RateLimit = require('express-rate-limit');
+
+var limiter = new RateLimit({
+    windowMs: 15*60*1000,
+    max: 50,
+    delayMs: 0,
+    message: "Too many accounts created from this IP, please try again after an hour"
+});
+
+app.use(limiter);
+
+var https = require('https');
+var privateKey  = fs.readFileSync('./node-product-api/certificadoDigital/selfsigned.key', 'utf8');
+var certificate = fs.readFileSync('./node-product-api/certificadoDigital/selfsigned.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
+var httpsServer = https.createServer(credentials, app);
 
 app.get('/products', async (req, res, next) => { 
     var resp = await db.getAllProducts();
@@ -98,7 +119,6 @@ app.delete('/products/:id', async (req, res, next) => {
     }
 });
 
-
-app.listen(port, () => {
-    console.log(`Listening at http://localhost:${port}`)
+httpsServer.listen(port, () => {
+    console.log(`Listening at https://localhost:${port}`)
 });
