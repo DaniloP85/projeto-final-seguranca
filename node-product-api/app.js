@@ -1,15 +1,15 @@
 const express = require('express') 
 const { auth } = require('express-oauth2-jwt-bearer');
 const db = require("./db");
-let cookieParser = require('cookie-parser'); 
 const bodyParser = require('body-parser');
-
+let cookieParser = require('cookie-parser'); 
+let RateLimit = require('express-rate-limit');
 const port = 3001
 const app = express()
+
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cookieParser()); 
-
 
 const checkJwt = auth({
     audience: 'projeto-final',
@@ -20,8 +20,6 @@ const checkJwt = auth({
 const ReDoS = (text) =>{
     return text.replace(/[^a-zA-Z0-9 ]/g, '');
 }
-
-var RateLimit = require('express-rate-limit');
 
 var limiter = new RateLimit({
     windowMs: 15*60*1000,
