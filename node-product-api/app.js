@@ -6,11 +6,6 @@ let cookieParser = require('cookie-parser');
 let RateLimit = require('express-rate-limit');
 const port = 3001
 const app = express()
-
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(bodyParser.json());
-app.use(cookieParser()); 
-
 const checkJwt = auth({
     audience: 'projeto-final',
     issuerBaseURL: 'https://dev-2zdtulpnb8jm1j8a.us.auth0.com/',
@@ -21,15 +16,17 @@ const ReDoS = (text) =>{
     return text.replace(/[^a-zA-Z0-9 ]/g, '');
 }
 
-var limiter = new RateLimit({
+let limiter = new RateLimit({
     windowMs: 15*60*1000,
     max: 10,
     delayMs: 0,
     message: "Too many accounts created from this IP, please try again after an hour"
 });
 
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
+app.use(cookieParser()); 
 app.use(limiter);
-
 app.use(checkJwt);
 
 app.use(function(req, res, next) {
@@ -59,7 +56,6 @@ app.post('/products', async (req, res, next) => {
         return res.status(err.code).json(err);
     }
 });
-
 
 app.get('/products/:id', async (req, res, next) => { 
 
