@@ -17,6 +17,9 @@ const checkJwt = auth({
     tokenSigningAlg: 'RS256'
 });
 
+const ReDoS = (text) =>{
+    return text.replace(/[^a-zA-Z0-9 ]/g, '');
+}
 
 app.use(checkJwt);
 
@@ -36,9 +39,9 @@ app.get('/products', async (req, res, next) => {
 app.post('/products', async (req, res, next) => { 
 
     try{
-        var name = req.body.name;
-        var description = req.body.description
-        var value = req.body.value
+        var name = ReDoS(req.body.name);
+        var description = ReDoS(req.body.description);
+        var value = ReDoS(req.body.value);
         
         await db.insertProduct(name, description, value);
         return res.status(200).json({message: 'Produto cadastrado com sucesso!'});
@@ -67,10 +70,9 @@ app.put('/products/:id', async (req, res, next) => {
 
     try{
         var id = req.params.id;
-
-        var name = req.body.name;
-        var description = req.body.description
-        var value = req.body.value
+        var name = ReDoS(req.body.name);
+        var description = ReDoS(req.body.description)
+        var value = ReDoS(req.body.value);
         
         const rows = await db.updateProductById(id, name, description, value);
         if(rows){
@@ -93,7 +95,6 @@ app.delete('/products/:id', async (req, res, next) => {
         return res.status(err.code).json(err);
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`)
