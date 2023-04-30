@@ -2,8 +2,6 @@
 
 O objetivo é tornarmos esta API segura utilizando das técnicas executadas na disciplina de Segurança em Aplicações do curso MBA em Mobile Development (25MOB).
 
-## Descrição
-
 O projeto contém uma API de Produtos que efetua as 4 operações do CRUD (*Create*, *Read*, *Update* e *Delete*).
 
 A API foi construída utilizando node.js e mysql para armazenar os dados.
@@ -77,12 +75,10 @@ Execute o somente o banco de dados via docker-compose (comando: `docker-compose 
 4. Mitigar Brute Force/Dictionary Attack através da implementação de RateLimit na API;
 ## ✒️ Autores
 
-||
-| --- |
-| [André](https://github.com/AndCordeiro) |
-| [Danilo](https://www.linkedin.com/in/danilopsnts) |
-| [Flávio](https://github.com/flavio-fgjj) |
-| [Samuel](https://github.com/SamuelDevMobile)
+- [André](https://github.com/AndCordeiro)
+- [Danilo](https://www.linkedin.com/in/danilopsnts)
+- [Flávio](https://github.com/flavio-fgjj)
+- [Samuel](https://github.com/SamuelDevMobile)
 
 ## 🖇️ Colaborando
 
