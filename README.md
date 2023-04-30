@@ -1,39 +1,41 @@
 # Projeto Final
 
-Seja bem vindo ao projeto final da disciplina de Segurança em Aplicações! 
+O objetivo é tornarmos esta API segura utilizando das técnicas executadas na disciplina de Segurança em Aplicações do curso MBA em Mobile Development (25MOB).
 
-Neste projeto, aplicaremos os conhecimentos adquiridos ao longo da disciplina em um contexto reduzido.
+## Descrição
 
-## Contexto
+O projeto contém uma API de Produtos que efetua as 4 operações do CRUD (*Create*, *Read*, *Update* e *Delete*).
 
-O projeto contém uma API de Produtos que efetua as 4 operações do CRUD (*Create*, *Read*, *Update* e *Delete*)
+A API foi construída utilizando node.js e mysql para armazenar os dados.
 
-O objetivo é tornarmos esta API segura utilizando das técnicas executadas em aula.
+## 📋 Pré-requisitos
 
-## Pre-requisito
+Para execução desse projeto é necessario instalar os seguintes software:
 
-Antes de iniciarmos o desafio, faz-se necessário que seja configurada a integração com o ambiente da auth0 conforme visto no laboratório da Aula 7 sobre Autorização e Autenticação e OAuth 2.0.
+- [Node.js](https://nodejs.org/en)
+- [Docker](https://www.docker.com/get-started)
+- [Nodemon](https://www.npmjs.com/package/nodemon)
+## ⚙️ Executando os testes
 
-## Challenge
+- `docker-compose up`: executa a API e o banco de dados em um container no Docker;
+    <details>
+    <summary>Clique aqui</summary>
 
-O desafio consiste em mitigar as vulnerabilidades e vertentes de ataque conhecidas e exploradas durante a disciplina desta API, sendo estes:
+    ![d](readme/docker-compose-up.gif) 
+    
+    </details>
 
-1. :white_check_mark: Mitigar Broken Authentication e Broken Access Control através da implementação de OAuth (0.2); 
-2. Mitigar Man In The Middle/Sniffing através da implementação de comunicação via HTTPS (0.2);
-3.  :white_check_mark: Mitigar Code Injection através da implementação de validação de campos de entrada e a utilização de Prepared Statements nas comunicações com o Banco de Dados (0.2);
-4.  :white_check_mark: Mitigar Brute Force/Dictionary Attack através da implementação de RateLimit na API (0.2);
-5.   :white_check_mark: Aplicação executando e funcionando corretamente (0.2). 
+- `docker-compose up db`: disponibiliza  o banco de dados em um container do Docker;
+    <details>
+    <summary>Clique aqui</summary>
 
-## Executando a aplicação
+    ![d](readme/docker-compose-up-db.gif) 
+    
+    </details>
 
-### Docker
+### Consumindo a API ([Insomnia](https://insomnia.rest/))
 
-Foi disponibilizada toda a configuração Docker com Docker Compose para executar o Banco de Dados e a API através do comando: `docker-compose up` executando o projeto com `nodemon`, sendo assim, qualquer alteração no código reflete diretamente na aplicação em execução no container.
-
-Ao executar, os mesmos serão expostos nos endereços:
-
-1. API Produto de produtos (products): http://localhost:3001;
-2. Banco de dados: localhost:3306;
+Foi disponibilizado um [repositório](https://github.com/DaniloP85/projeto-final-collection), para testes da aplicação, conforme demostrando nas ilustrações acima.
 
 ### Debugando a API
 
@@ -43,13 +45,36 @@ Caso seja necessário debugar a API, execute o somente o banco de dados via dock
 
 \* Ao executar essa configuração, caso ocorra erro de binário não encontrado para o nodemon, execute o comando: `npm i -g nodemon` e tente novamente.
 
+Ao executar, os mesmos serão expostos nos endereços:
 
-## Consumindo a API
+1. API Produto de produtos (products): http://localhost:3001;
+2. Banco de dados: localhost:3306;
 
-### Postman
+## 📌 Vulnerabilidades
 
-Para fins de teste, foi disponibilizado na raiz do projeto uma Postman collection chamada `ProjetoFinal.postman_collection.json` para que seja possível realizar testes facilmente.
+1. Mitigar Broken Authentication e Broken Access Control através da implementação de OAuth; 
+2. Mitigar Man In The Middle/Sniffing através da implementação de comunicação via HTTPS;
+3. Mitigar Code Injection através da implementação de validação de campos de entrada e a utilização de Prepared Statements nas comunicações com o Banco de Dados;
+4. Mitigar Brute Force/Dictionary Attack através da implementação de RateLimit na API;
 
-### Insomnia
 
-Para fins de teste, coloca os endpoins utilizados neste projeto em um [repo](https://github.com/DaniloP85/projeto-final-collection).
+
+## 🖇️ Colaborando
+
+Por favor, leia o [colaboração](CONTRIBUTING.md) para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
+
+
+## ✒️ Autores
+
+|  |
+| --- |
+| [André](https://github.com/AndCordeiro) |
+| [Danilo](https://www.linkedin.com/in/danilopsnts) |
+| [Flávio](https://github.com/flavio-fgjj) |
+| [Samuel](https://github.com/SamuelDevMobile)
+
+## 📄 Licença
+Este projeto está licenciado sob a licença MT - veja o arquivo [license](LICENSE.md) para detalhes
+
+## 🎁 Agradeciemntos
+* [Gabriel Pereira da Silva](https://github.com/Gabrielgps25)
